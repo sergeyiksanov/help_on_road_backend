@@ -76,9 +76,6 @@ func (ur *UserRepository) GetById(id int64) (*models.User, error) {
 
 func (ur *UserRepository) Update(tx services.TransactionContext, model *models.User) error {
 	userDto := dto.User{
-		ID:            model.Id,
-		PhoneNumber:   model.PhoneNumber,
-		Password:      model.Password,
 		FirstName:     model.FirstName,
 		LastName:      model.LastName,
 		Surname:       model.Surname,

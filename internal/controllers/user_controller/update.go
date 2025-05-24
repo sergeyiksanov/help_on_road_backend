@@ -9,7 +9,6 @@ import (
 
 type (
 	updateRequest struct {
-		PhoneNumber   string `json:"phone_number,omitempty"`
 		FirstName     string `json:"first_name,omitempty"`
 		LastName      string `json:"last_name,omitempty"`
 		Surname       string `json:"surname,omitempty"`
@@ -33,13 +32,12 @@ func (uc *UserController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.PhoneNumber == "" || req.FirstName == "" || req.LastName == "" {
+	if req.FirstName == "" || req.LastName == "" {
 		http.Error(w, "Invalid fields", http.StatusBadRequest)
 		return
 	}
 
 	userModel := models.User{
-		PhoneNumber:   req.PhoneNumber,
 		FirstName:     req.FirstName,
 		LastName:      req.LastName,
 		Surname:       req.Surname,
