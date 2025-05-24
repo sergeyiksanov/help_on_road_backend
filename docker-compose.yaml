@@ -1,0 +1,40 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_USER: "help_on_road_admin"
+      POSTGRES_PASSWORD: "PN9nBJSN"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB_NAME: "help_on_road"
+      JWT_SECRET_KEY: "HYwWh?wW7?%F4EjL"
+      SERVER_PORT: "8000"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: "BDKDPCbG"
+      REDIS_DB: 0
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: "postgres:13"
+    environment:
+      POSTGRES_USER: "help_on_road_admin"
+      POSTGRES_PASSWORD: "PN9nBJSN"
+      POSTGRES_DB: "help_on_road"
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: 
+      - redis-server 
+      - --appendonly 
+      - yes
+    restart: unless-stopped
+
