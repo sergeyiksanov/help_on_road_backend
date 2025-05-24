@@ -26,7 +26,7 @@ func (uc *UserController) Routes() chi.Router {
 	r.Post("/sign_up", uc.SignUp)
 	r.Post("/sign_in", uc.SignIn)
 	r.Get("/me", uc.GetMe)
-	r.Get("/update", uc.Update)
+	r.Post("/update", uc.Update)
 
 	return r
 }
