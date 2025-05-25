@@ -91,11 +91,23 @@ func (ur *UserRepository) Update(tx services.TransactionContext, model *models.U
 		var ok bool
 		ctx, ok = tx.(*gorm.DB)
 		if !ok {
-			return errors.New("Invalid ctx")
+			return errors.New("invalid transaction context")
 		}
 	}
 
-	return ctx.Save(&userDto).Error
+	result := ctx.Model(&dto.User{}).
+		Where("id = ?", model.Id).
+		Omit("id", "password", "phone_number").
+		Updates(userDto)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("user not found or no fields updated")
+	}
+
+	return nil
 }
 
 func (ur *UserRepository) Delete(tx services.TransactionContext, id int64) error {
