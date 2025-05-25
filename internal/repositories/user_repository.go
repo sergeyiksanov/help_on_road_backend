@@ -98,6 +98,7 @@ func (ur *UserRepository) Update(tx services.TransactionContext, model *models.U
 	result := ctx.Model(&dto.User{}).
 		Where("id = ?", model.Id).
 		Omit("id", "password", "phone_number").
+		Select("is_valid", "is_moderate", "first_name", "last_name", "surname", "auto_model", "auto_gos_number", "vin_code").
 		Updates(userDto)
 
 	if result.Error != nil {
