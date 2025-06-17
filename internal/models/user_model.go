@@ -10,6 +10,7 @@ type User struct {
 	AutoModel     string `json:"auto_model,omitempty"`
 	AutoGosNumber string `json:"auto_gos_number,omitempty"`
 	VinCode       string `json:"vin_code,omitempty"`
+	AutoYear      string `json:"auto_year"`
 	IsValid       bool   `json:"is_valid,omitempty"`
 	IsModerate    bool   `json:"is_moderate,omitempty"`
 }

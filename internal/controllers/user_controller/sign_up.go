@@ -17,6 +17,7 @@ type (
 		AutoModel     string `json:"auto_model,omitempty"`
 		AutoGosNumber string `json:"auto_gos_number,omitempty"`
 		VinCode       string `json:"vin_code,omitempty"`
+		AutoYear      string `json:"auto_year"`
 	}
 )
 
@@ -42,6 +43,7 @@ func (uc *UserController) SignUp(w http.ResponseWriter, r *http.Request) {
 		AutoModel:     req.AutoModel,
 		AutoGosNumber: req.AutoGosNumber,
 		VinCode:       req.VinCode,
+		AutoYear:      req.AutoYear,
 	}
 
 	err := uc.userService.SignUp(r.Context(), &userModel)

@@ -33,6 +33,7 @@ func (ur *UserRepository) Create(tx services.TransactionContext, model *models.U
 		VinCode:       model.VinCode,
 		IsValid:       model.IsValid,
 		IsModerate:    model.IsModerate,
+		AutoYear:      model.AutoYear,
 	}
 
 	ctx := ur.db
@@ -71,6 +72,7 @@ func (ur *UserRepository) GetById(id int64) (*models.User, error) {
 		VinCode:       userDto.VinCode,
 		IsValid:       userDto.IsValid,
 		IsModerate:    userDto.IsModerate,
+		AutoYear:      userDto.AutoYear,
 	}, nil
 }
 
@@ -84,6 +86,7 @@ func (ur *UserRepository) Update(tx services.TransactionContext, model *models.U
 		VinCode:       model.VinCode,
 		IsValid:       model.IsValid,
 		IsModerate:    model.IsModerate,
+		AutoYear:      model.AutoYear,
 	}
 
 	ctx := ur.db
@@ -98,7 +101,7 @@ func (ur *UserRepository) Update(tx services.TransactionContext, model *models.U
 	result := ctx.Model(&dto.User{}).
 		Where("id = ?", model.Id).
 		Omit("id", "password", "phone_number").
-		Select("is_valid", "is_moderate", "first_name", "last_name", "surname", "auto_model", "auto_gos_number", "vin_code").
+		Select("is_valid", "is_moderate", "first_name", "last_name", "surname", "auto_model", "auto_gos_number", "vin_code", "auto_year").
 		Updates(userDto)
 
 	if result.Error != nil {
@@ -148,6 +151,7 @@ func (ur *UserRepository) GetByPhoneNumber(phoneNumber string) (*models.User, er
 		VinCode:       userDto.VinCode,
 		IsValid:       userDto.IsValid,
 		IsModerate:    userDto.IsModerate,
+		AutoYear:      userDto.AutoYear,
 	}, nil
 }
 
@@ -171,6 +175,7 @@ func (ur *UserRepository) GetNotValidUsers() ([]*models.User, error) {
 			VinCode:       user.VinCode,
 			IsValid:       user.IsValid,
 			IsModerate:    user.IsModerate,
+			AutoYear:      user.AutoYear,
 		}
 	}
 

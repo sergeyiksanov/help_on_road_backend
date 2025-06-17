@@ -28,5 +28,5 @@ func (c *TelegramClient) sendHelpCallMessage(call *models.HelpCall) {
 }
 
 func formatHelpInfo(call *models.HelpCall) string {
-	return "Новый вызов:\nОписание: " + call.Description + "\nУслуга: " + call.Service + "\nСпособ оплаты: " + call.PayType + "\n\nПользователь\nID: " + strconv.FormatInt(call.Caller.Id, 10) + "\nИмя: " + call.Caller.LastName + " " + call.Caller.FirstName + " " + call.Caller.Surname + "\nНомер телефона: " + call.Caller.PhoneNumber + "\nМодель автомобиля: " + call.Caller.AutoModel + "\nГос номер автомобиля: " + call.Caller.AutoGosNumber + "\nVIN код: " + call.Caller.VinCode
+	return "Новый вызов:\nОписание: " + call.Description + "\nУслуга: " + call.Service + "\nСпособ оплаты: " + call.PayType + "\n\nПользователь\nID: " + strconv.FormatInt(call.Caller.Id, 10) + "\nИмя: " + call.Caller.LastName + " " + call.Caller.FirstName + " " + call.Caller.Surname + "\nНомер телефона: " + call.Caller.PhoneNumber + "\nМодель автомобиля: " + call.Caller.AutoModel + "\nГос номер автомобиля: " + call.Caller.AutoGosNumber + "\nVIN код: " + call.Caller.VinCode + "\nГод выпуска автомобиля: " + call.Caller.AutoYear
 }

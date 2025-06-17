@@ -25,5 +25,5 @@ func (c *TelegramClient) sendModerationMessage(user *models.User) {
 }
 
 func formatUserInfo(user *models.User) string {
-	return "Новый пользователь:\nID: " + strconv.FormatInt(user.Id, 10) + "\nИмя: " + user.LastName + " " + user.FirstName + " " + user.Surname + "\nНомер телефона: " + user.PhoneNumber + "\nМодель автомобиля: " + user.AutoModel + "\nГос номер автомобиля: " + user.AutoGosNumber + "\nVIN код: " + user.VinCode
+	return "Новый пользователь:\nID: " + strconv.FormatInt(user.Id, 10) + "\nИмя: " + user.LastName + " " + user.FirstName + " " + user.Surname + "\nНомер телефона: " + user.PhoneNumber + "\nМодель автомобиля: " + user.AutoModel + "\nГос номер автомобиля: " + user.AutoGosNumber + "\nVIN код: " + user.VinCode + "\nГод выпуска автомобиля: " + user.AutoYear
 }

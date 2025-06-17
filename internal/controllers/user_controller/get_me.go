@@ -16,6 +16,7 @@ type userResp struct {
 	VinCode       string `json:"vin_code,omitempty"`
 	IsValid       bool   `json:"is_valid,omitempty"`
 	IsModerate    bool   `json:"is_moderate,omitempty"`
+	AutoYear      string `json:"auto_year"`
 }
 
 func (c *UserController) GetMe(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +43,7 @@ func (c *UserController) GetMe(w http.ResponseWriter, r *http.Request) {
 		VinCode:       user.VinCode,
 		IsValid:       user.IsValid,
 		IsModerate:    user.IsModerate,
+		AutoYear:      user.AutoYear,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

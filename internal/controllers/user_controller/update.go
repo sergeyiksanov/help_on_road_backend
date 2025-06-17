@@ -15,6 +15,7 @@ type (
 		AutoModel     string `json:"auto_model,omitempty"`
 		AutoGosNumber string `json:"auto_gos_number,omitempty"`
 		VinCode       string `json:"vin_code,omitempty"`
+		AutoYear      string `json:"auto_year"`
 	}
 )
 
@@ -46,6 +47,7 @@ func (uc *UserController) Update(w http.ResponseWriter, r *http.Request) {
 		VinCode:       req.VinCode,
 		IsValid:       false,
 		IsModerate:    false,
+		AutoYear:      req.AutoYear,
 	}
 
 	err := uc.userService.Update(r.Context(), token, &userModel)

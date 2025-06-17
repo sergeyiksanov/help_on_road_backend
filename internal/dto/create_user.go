@@ -9,6 +9,7 @@ type User struct {
 	Password      string `gorm:"column:password"`
 	AutoModel     string `gorm:"column:auto_model"`
 	AutoGosNumber string `gorm:"column:auto_gos_number"`
+	AutoYear      string `gorm:"column:auto_year"`
 	VinCode       string `gorm:"column:vin_code"`
 	IsValid       bool   `gorm:"column:is_valid"`
 	IsModerate    bool   `gorm:"column:is_moderate"`
