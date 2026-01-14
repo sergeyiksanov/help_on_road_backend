@@ -32,8 +32,6 @@ func main() {
 	r.Mount("/api/help", service_provider.HelpController().Routes())
 	defer RecoverWithAlert(service_provider.TgClient().Alert)()
 
-	panic("test panic")
-
 	go func() {
 		defer RecoverWithAlert(service_provider.TgClient().Alert)()
 
