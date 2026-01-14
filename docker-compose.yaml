@@ -20,6 +20,11 @@ services:
     depends_on:
       - postgres
       - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   postgres:
     image: "postgres:13"
