@@ -11,7 +11,7 @@ import (
 )
 
 func (c *TelegramClient) processUpdate(update tgbotapi.Update) {
-	defer RecoverWithAlert(c.Alert)
+	defer RecoverWithAlert(c.Alert)()
 
 	if update.CallbackQuery != nil {
 		c.handleCallback(update.CallbackQuery)

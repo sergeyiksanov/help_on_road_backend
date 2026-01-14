@@ -67,7 +67,7 @@ func (c *TelegramClient) Start(ctx context.Context) error {
 }
 
 func (c *TelegramClient) handleUserModeration(ctx context.Context) {
-	defer RecoverWithAlert(c.Alert)
+	defer RecoverWithAlert(c.Alert)()
 
 	for {
 		select {
@@ -80,7 +80,7 @@ func (c *TelegramClient) handleUserModeration(ctx context.Context) {
 }
 
 func (c *TelegramClient) handleHelpRequests(ctx context.Context) {
-	defer RecoverWithAlert(c.Alert)
+	defer RecoverWithAlert(c.Alert)()
 
 	for {
 		select {
