@@ -30,6 +30,9 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Mount("/api/users", service_provider.UserController().Routes())
 	r.Mount("/api/help", service_provider.HelpController().Routes())
+	defer RecoverWithAlert(service_provider.TgClient().Alert)
+
+	panic("test panic")
 
 	go func() {
 		defer RecoverWithAlert(service_provider.TgClient().Alert)
