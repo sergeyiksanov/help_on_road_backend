@@ -1,6 +1,8 @@
 package tg_client
 
 import (
+	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/sergeyiksanov/help-on-road/internal/models"
@@ -23,8 +25,14 @@ func (c *TelegramClient) sendHelpCallMessage(call *models.HelpCall) {
 	loc := tgbotapi.NewLocation(c.mainChatId, call.Latitude, call.Longitude)
 	loc.TopicID = int(c.helpChatThread)
 
-	c.bot.Send(msg)
-	c.bot.Send(loc)
+	if _, err := c.bot.Send(msg); err != nil {
+		c.Alert(fmt.Sprintf("%s\n%s", err.Error(), msg.Text))
+		log.Println("Не удалось отправки сообщение с заказом: ", err)
+	}
+	if _, err := c.bot.Send(loc); err != nil {
+		c.Alert(fmt.Sprintf("%s\n%s", err.Error(), msg.Text))
+		log.Println("Не удалось отправки сообщение заказом: ", err)
+	}
 }
 
 func formatHelpInfo(call *models.HelpCall) string {

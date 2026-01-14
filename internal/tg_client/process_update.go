@@ -4,12 +4,15 @@ import (
 	"context"
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/sergeyiksanov/help-on-road/internal/models"
 	tgbotapi "github.com/sergeyiksanov/telegram-bot-api"
 )
 
 func (c *TelegramClient) processUpdate(update tgbotapi.Update) {
+	defer RecoverWithAlert(c.Alert)
+
 	if update.CallbackQuery != nil {
 		c.handleCallback(update.CallbackQuery)
 		return
@@ -32,6 +35,8 @@ func (c *TelegramClient) processUpdate(update tgbotapi.Update) {
 }
 
 func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	var err error
 
 	data := callback.Data
@@ -43,7 +48,7 @@ func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
 		id, err = strconv.ParseInt(userID, 10, 64)
 
 		if err == nil {
-			err = c.userService.ModerateUser(context.Background(), id, true)
+			err = c.userService.ModerateUser(ctx, id, true)
 		}
 	} else if len(data) > 11 && data[:11] == "reject_user" {
 		userID := data[12:]
@@ -51,7 +56,7 @@ func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
 		id, err = strconv.ParseInt(userID, 10, 64)
 
 		if err == nil {
-			err = c.userService.ModerateUser(context.Background(), id, false)
+			err = c.userService.ModerateUser(ctx, id, false)
 		}
 	}
 
@@ -62,7 +67,7 @@ func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
 		id, err = strconv.ParseInt(userID, 10, 64)
 
 		if err == nil {
-			err = c.helpService.CommitHelp(context.Background(), id, models.Helping)
+			err = c.helpService.CommitHelp(ctx, id, models.Helping)
 			isHelping = true
 		}
 	} else if len(data) > 11 && data[:11] == "reject_call" {
@@ -71,7 +76,7 @@ func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
 		id, err = strconv.ParseInt(userID, 10, 64)
 
 		if err == nil {
-			err = c.helpService.CommitHelp(context.Background(), id, models.Rejected)
+			err = c.helpService.CommitHelp(ctx, id, models.Rejected)
 		}
 	} else if len(data) > 11 && data[:11] == "complt_call" {
 		userID := data[12:]
@@ -79,7 +84,7 @@ func (c *TelegramClient) handleCallback(callback *tgbotapi.CallbackQuery) {
 		id, err = strconv.ParseInt(userID, 10, 64)
 
 		if err == nil {
-			err = c.helpService.CommitHelp(context.Background(), id, models.Helped)
+			err = c.helpService.CommitHelp(ctx, id, models.Helped)
 		}
 	}
 

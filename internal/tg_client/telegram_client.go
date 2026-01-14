@@ -2,6 +2,7 @@ package tg_client
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/sergeyiksanov/help-on-road/internal/models"
@@ -19,6 +20,14 @@ type TelegramClient struct {
 	mainChatId           int64
 	moderationChatThread int64
 	helpChatThread       int64
+}
+
+func RecoverWithAlert(alert func(string)) func() {
+	return func() {
+		if r := recover(); r != nil {
+			alert(fmt.Sprintf("PANIC: %v", r))
+		}
+	}
 }
 
 func NewTelegramClient(token string, userService *user_service.UserService, helpService *help_service.HelpService, userChannel chan *models.User, helpChannel chan *models.HelpCall, mainChatId, moderationChatThread, helpChatThread int64) (*TelegramClient, error) {
@@ -58,6 +67,8 @@ func (c *TelegramClient) Start(ctx context.Context) error {
 }
 
 func (c *TelegramClient) handleUserModeration(ctx context.Context) {
+	defer RecoverWithAlert(c.Alert)
+
 	for {
 		select {
 		case <-ctx.Done():
@@ -69,6 +80,8 @@ func (c *TelegramClient) handleUserModeration(ctx context.Context) {
 }
 
 func (c *TelegramClient) handleHelpRequests(ctx context.Context) {
+	defer RecoverWithAlert(c.Alert)
+
 	for {
 		select {
 		case <-ctx.Done():

@@ -1,6 +1,8 @@
 package tg_client
 
 import (
+	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/sergeyiksanov/help-on-road/internal/models"
@@ -21,7 +23,10 @@ func (c *TelegramClient) sendModerationMessage(user *models.User) {
 	msg.TopicID = int(c.moderationChatThread)
 	msg.ReplyMarkup = keyboard
 
-	c.bot.Send(msg)
+	if _, err := c.bot.Send(msg); err != nil {
+		c.Alert(fmt.Sprintf("%s\n%s", err.Error(), msg.Text))
+		log.Println("Не удалось отправки сообщение модерации: ", err)
+	}
 }
 
 func formatUserInfo(user *models.User) string {
