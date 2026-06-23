@@ -32,20 +32,26 @@ type (
 		Update(ctx context.Context, userID int64, index int, updatedCall *models.HelpCall) error
 	}
 
+	IServicesRepository interface {
+		GetAll(ctx context.Context) ([]models.Service, error)
+	}
+
 	HelpService struct {
-		tokenRepository ITokenRepository
-		userRepository  IUserRepository
-		helpRepository  IHelpRepository
-		helpChannel     chan<- *models.HelpCall
+		tokenRepository    ITokenRepository
+		userRepository     IUserRepository
+		helpRepository     IHelpRepository
+		servicesRepository IServicesRepository
+		helpChannel        chan<- *models.HelpCall
 	}
 )
 
-func NewHelpService(tr ITokenRepository, ur IUserRepository, hr IHelpRepository, hc chan *models.HelpCall) *HelpService {
+func NewHelpService(tr ITokenRepository, ur IUserRepository, hr IHelpRepository, sr IServicesRepository, hc chan *models.HelpCall) *HelpService {
 	hs := HelpService{
-		tokenRepository: tr,
-		userRepository:  ur,
-		helpRepository:  hr,
-		helpChannel:     hc,
+		tokenRepository:    tr,
+		userRepository:     ur,
+		helpRepository:     hr,
+		servicesRepository: sr,
+		helpChannel:        hc,
 	}
 
 	calls, err := hs.helpRepository.GetAll(context.Background())

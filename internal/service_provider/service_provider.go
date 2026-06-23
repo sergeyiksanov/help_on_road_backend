@@ -24,6 +24,7 @@ type ServiceProvider struct {
 	userRepository     *repositories.UserRepository
 	tokensRepository   *repositories.TokensRepository
 	heloRepository     *repositories.HelpRepository
+	servicesRepository *repositories.ServiceRepository
 
 	userService *user_service.UserService
 	helpService *help_service.HelpService

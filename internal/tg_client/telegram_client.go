@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/sergeyiksanov/help-on-road/internal/models"
 	"github.com/sergeyiksanov/help-on-road/internal/services/help_service"
@@ -50,20 +51,37 @@ func NewTelegramClient(token string, userService *user_service.UserService, help
 }
 
 func (c *TelegramClient) Start(ctx context.Context) error {
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-	updates := c.bot.GetUpdatesChan(u)
-	log.Print("init upd chan")
+	var offset int
+
+	log.Print("start telegram polling")
 
 	go c.handleUserModeration(ctx)
-	log.Print("handle user modertaion msgs")
 	go c.handleHelpRequests(ctx)
 
-	for update := range updates {
-		go c.processUpdate(update)
-	}
+	for {
+		select {
+		case <-ctx.Done():
+			log.Print("telegram polling stopped")
+			return ctx.Err()
+		default:
+		}
 
-	return nil
+		updates, err := c.bot.GetUpdates(tgbotapi.UpdateConfig{
+			Offset:  offset,
+			Timeout: 60,
+		})
+		if err != nil {
+			log.Printf("getUpdates error: %v", err)
+			c.Alert("Failed get updates: " + err.Error())
+			time.Sleep(3 * time.Second)
+			continue
+		}
+
+		for _, update := range updates {
+			offset = update.UpdateID + 1
+			c.processUpdate(update)
+		}
+	}
 }
 
 func (c *TelegramClient) handleUserModeration(ctx context.Context) {
